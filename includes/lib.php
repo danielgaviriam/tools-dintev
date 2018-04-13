@@ -31,29 +31,71 @@ function td_get_licences(){
 }
 
 
+function td_insert_many_relation($POST, $tool_id){
+
+	global $wpdb;
+
+	if(isset($POST['categories'])){
+		$categories=$POST['categories'];
+		foreach ($categories as $selected){
+			$data=array(
+				'Tool'=>$tool_id,
+				'Category'=>$selected
+			);
+			$result=$wpdb->insert('wp_td_tools_category', $data);
+		}
+
+	}
+	if(isset($POST['licenses'])){
+		$licenses=$POST['licenses'];
+		foreach ($licenses as $selected){
+			$data=array(
+				'Tool'=>$tool_id,
+				'License'=>$selected
+			);
+			$result=$wpdb->insert('wp_td_tools_license', $data);
+		}
+
+	}
+	if(isset($POST['plataforms'])){
+		$plataforms=$POST['plataforms'];
+		foreach ($plataforms as $selected)
+		{
+			$data=array(
+				'Tool'=>$tool_id,
+				'Plataform'=>$selected
+			);
+			$result=$wpdb->insert('wp_td_tools_plataform', $data);
+		}
+	}
+	return true;
+}
+
+
+//Despliega el formulario para añadir una nueva herramienta.
 
 function form_tool(){
 
 	$categories=td_get_categories();
 	$plataforms=td_get_plataforms();
-	$licences=td_get_licences();
+	$licenses=td_get_licences();
 	?>
 
  	<div class="wrap">
         <h2>Agregar una nueva herramienta</h2>
-        <form id="tools_form" method="post" action="/includes/save_tools.php">
+        <form id="tools_form" method="post" action="/includes/save_tools.php" enctype="multipart/form-data">
             <?php wp_nonce_field('update-options') ?>
             <p>
                 <strong>Nombre:</strong><br />
-                <input type="text" name="name" size="45" value="#" />
+                <input type="text" name="name" size="45"/>
             </p>
             <p>
                 <strong>Sitio Web:</strong><br />
-                <input type="text" name="www" size="45" value="#" />
+                <input type="text" name="www" size="45"/>
             </p>
             <p>
                 <strong>Categoria(s):</strong><br />
-                 <select name="categories" multiple>
+                 <select name="categories[]" multiple="multiple">
                  	<?php 
                  	foreach( $categories as $key => $row) {
                  	?>	
@@ -65,12 +107,11 @@ function form_tool(){
             </p>
             <p>
                 <strong>Descripción:</strong><br />
-                <textarea rows="4" cols="50" name="description" form="tools_form">
-                </textarea>
+                <textarea rows="4" cols="50" name="description" form="tools_form"></textarea>
             </p>
             <p>
                 <strong>Plataforma(s):</strong><br />
-                 <select name="plataforms" multiple>
+                 <select name="plataforms[]" multiple>
                  	<?php 
                  	foreach( $plataforms as $key => $row) {
                  	?>	
@@ -83,14 +124,14 @@ function form_tool(){
 
 			<p>
 				<strong>Requiere Conexión a Internet?</strong><br />
-				<input type="radio" name="connect" value="true" checked>Sí<br>
-				<input type="radio" name="connect" value="false">No<br>
+				<input type="radio" name="connect" value="1" checked>Sí<br>
+				<input type="radio" name="connect" value="0">No<br>
   			</p>
             <p>
                 <strong>Licencia(s):</strong><br />
-                 <select multiple>
+                 <select name="licenses[]" multiple="multiple">
                     <?php 
-                 	foreach( $licences as $key => $row) {
+                 	foreach( $licenses as $key => $row) {
                  	?>	
                  	<option value="<?php echo $row->ID?>"><?php echo $row->Name?></option>
 					<?php 
@@ -100,10 +141,31 @@ function form_tool(){
             </p>
             <p>
                 <strong>Detalles:</strong><br />
-                <textarea rows="4" cols="50" name="details" form="tools_form">
-                </textarea>
+                <textarea rows="4" cols="50" name="details" form="tools_form"></textarea>
             </p>
+            <input type="file" name="imgfile">
+
+
             <p><input type="submit" name="submit-tools" value="save" /></p>
+            <input type="hidden" name="action"/>
+            <input type="hidden" name="page_options"/>
+        </form>
+    </div>
+<?php
+    }
+
+    function form_category()
+    {
+?>
+	<div class="wrap">
+        <h2>Agregar una nueva Categoria</h2>
+        <form id="tools_form" method="post" action="/includes/save_category.php">
+            <?php wp_nonce_field('update-options') ?>
+            <p>
+                <strong>Nombre:</strong><br />
+                <input type="text" name="name" size="45"/>
+            </p>
+            <p><input type="submit" name="submit-category" value="save" /></p>
             <input type="hidden" name="action"/>
             <input type="hidden" name="page_options"/>
         </form>
