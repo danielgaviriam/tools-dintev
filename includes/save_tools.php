@@ -1,5 +1,4 @@
 <?php
-require_once plugin_dir_path(__FILE__) . 'lib.php';
 /**
 * Plugin Name: tools-dintev
 * Description: 
@@ -13,7 +12,8 @@ if(isset($_POST['submit-tools']))
 {
 	$file = $_FILES['imgfile'];
 	$name_file = $file['name'];
-	$path = WP_PLUGIN_DIR.'/tools-dintev/img/'.$name_file;
+
+	$path = WP_PLUGIN_URL.'/tools-dintev/img/'.$name_file;
 	
 	if (move_uploaded_file($file['tmp_name'], $path)) {
 		$data=array(

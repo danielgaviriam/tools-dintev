@@ -6,7 +6,7 @@
 * Author: Daniel Gaviria
 * License: GPL2
 */
-require_once plugin_dir_path(__FILE__) . 'includes/save_tools.php';
+
 require_once plugin_dir_path(__FILE__) . 'includes/lib.php';
 
 	add_action('admin_menu', 'td_start_plugin');

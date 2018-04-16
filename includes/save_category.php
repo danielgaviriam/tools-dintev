@@ -8,7 +8,6 @@ require_once plugin_dir_path(__FILE__) . 'lib.php';
 * License: GPL2
 */
 global $wpdb;
-echo "test";
 if(isset($_POST['submit-category']))
 {
 	$data=array(
