@@ -76,11 +76,13 @@ function td_insert_many_relation($POST, $tool_id){
 
 function form_tool(){
 
+    global $wpdb;
+
     if(isset($_POST['submit-tools']))
     {
         $file = $_FILES['imgfile'];
         $name_file = $file['name'];
-        $path = WP_PLUGIN_URL.'/tools-dintev/img/'.$name_file;
+        $path = $_SERVER['DOCUMENT_ROOT'].'/wp-content/plugins/tools-dintev/img/'.$name_file;
         
         if (move_uploaded_file($file['tmp_name'], $path)) {
             $data=array(
@@ -95,8 +97,11 @@ function form_tool(){
             $tool_id=$wpdb->insert_id;
 
             $insert_status=td_insert_many_relation($_POST,$tool_id);
-        } else {
-            echo "fail";
+        } else {?>
+            <div class="error notice">
+                <p>There has been an error. Bummer</p>
+            </div>
+    <?php
         }
     }
     else{
@@ -181,14 +186,14 @@ function form_tool(){
 
     function form_category(){
 
+        global $wpdb;
+
         if(isset($_POST['submit-category'])){
-            echo $_POST['name'];
             $data=array(
                 'Name' => $_POST['name']
             );
 
             $wpdb->insert('wp_td_Categories', $data);
-            echo $wpdb->print_error();
         }
         else{
         ?>
