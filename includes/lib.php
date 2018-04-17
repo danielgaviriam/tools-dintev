@@ -74,7 +74,7 @@ function td_insert_many_relation($POST, $tool_id){
 
 //Despliega el formulario para añadir una nueva herramienta.
 
-function form_tool(){
+function td_form_tool(){
 
     global $wpdb;
 
@@ -184,7 +184,7 @@ function form_tool(){
         }
     }
 
-    function form_category(){
+    function td_form_category(){
 
         global $wpdb;
 
@@ -212,5 +212,14 @@ function form_tool(){
             </div>
         <?php
         }
+    }
+
+    function td_get_info_tool($id){
+        global $wpdb;
+        
+        
+
+
+
     }
 ?>
