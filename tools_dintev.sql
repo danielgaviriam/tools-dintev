@@ -51,3 +51,13 @@ CREATE TABLE `wp_td_tools_plataform` (
 	FOREIGN KEY (Plataform) REFERENCES wp_td_Plataforms(id),
 	FOREIGN KEY (Tool) REFERENCES wp_td_Tools(id)
 	);
+
+INSERT INTO `wp_td_Categories` (Name) VALUES ('Gamificacion');
+INSERT INTO `wp_td_Categories` (Name) VALUES ('Escolaridad');
+INSERT INTO `wp_td_Categories` (Name) VALUES ('Investigación');
+INSERT INTO `wp_td_Licenses` (Name) VALUES ('Gratuita');
+INSERT INTO `wp_td_Licenses` (Name) VALUES ('Pago');
+INSERT INTO `wp_td_Licenses` (Name) VALUES ('Freemium');
+INSERT INTO `wp_td_Plataforms` (Name) VALUES ('iOS');
+INSERT INTO `wp_td_Plataforms` (Name) VALUES ('Android');
+INSERT INTO `wp_td_Plataforms` (Name) VALUES ('PC(Escritorio)');
