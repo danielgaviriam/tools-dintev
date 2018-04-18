@@ -7,6 +7,10 @@
 * License: GPL2
 */
 
+
+/*
+*Retorna la lista de categorias existentes en la BD
+*/
 function td_get_categories(){
 
 	global $wpdb;
@@ -15,6 +19,9 @@ function td_get_categories(){
 	return $results;
 }
 
+/*
+*Retorna la lista de plataformas existentes en la BD
+*/
 function td_get_plataforms(){
 
 	global $wpdb;
@@ -22,6 +29,10 @@ function td_get_plataforms(){
 	$results = $wpdb->get_results( 'SELECT * FROM wp_td_Plataforms', OBJECT );
 	return $results;
 }
+
+/*
+*Retorna la lista de licensias existentes en la BD
+*/
 function td_get_licences(){
 
 	global $wpdb;
@@ -30,7 +41,10 @@ function td_get_licences(){
 	return $results;
 }
 
-
+/*
+*Una vez creada una nueva herramienta esta funcion se encarga de añadir la relación 
+*con Plataformas,Categorias y Licencias a las que pertenece
+*/
 function td_insert_many_relation($POST, $tool_id){
 
 	global $wpdb;
@@ -43,10 +57,17 @@ function td_insert_many_relation($POST, $tool_id){
 				'Category'=>$selected
 			);
 			$result=$wpdb->insert('wp_td_tools_category', $data);
+            
 		}
 
 	}
-	if(isset($POST['licenses'])){
+    else{
+        echo "falle en categorias";
+    }
+	
+
+    if(isset($POST['licenses'])){
+
 		$licenses=$POST['licenses'];
 		foreach ($licenses as $selected){
 			$data=array(
@@ -54,9 +75,13 @@ function td_insert_many_relation($POST, $tool_id){
 				'License'=>$selected
 			);
 			$result=$wpdb->insert('wp_td_tools_license', $data);
+            
 		}
 
 	}
+    else{
+        echo "falle en licencias";
+    }
 	if(isset($POST['plataforms'])){
 		$plataforms=$POST['plataforms'];
 		foreach ($plataforms as $selected)
@@ -66,14 +91,19 @@ function td_insert_many_relation($POST, $tool_id){
 				'Plataform'=>$selected
 			);
 			$result=$wpdb->insert('wp_td_tools_plataform', $data);
+
 		}
 	}
+    else{
+        echo "falle en plataformas";
+    }
 	return true;
 }
 
 
-//Despliega el formulario para añadir una nueva herramienta.
-
+/*
+*Despliega el formulario para añadir una nueva herramienta.
+*/
 function td_form_tool(){
 
     global $wpdb;
@@ -128,7 +158,7 @@ function td_form_tool(){
                      	<?php 
                      	foreach( $categories as $key => $row) {
                      	?>	
-                     	<option value="<?php echo $row->ID?>"><?php echo $row->Name?></option>
+                     	<option value="<?php echo $row->id?>"><?php echo $row->Name?></option>
     					<?php 
                      	}
                      	?>	                 	
@@ -144,7 +174,7 @@ function td_form_tool(){
                      	<?php 
                      	foreach( $plataforms as $key => $row) {
                      	?>	
-                     	<option value="<?php echo $row->ID?>"><?php echo $row->Name?></option>
+                     	<option value="<?php echo $row->id?>"><?php echo $row->Name?></option>
     					<?php 
                      	}
                      	?>	 
@@ -162,7 +192,7 @@ function td_form_tool(){
                         <?php 
                      	foreach( $licenses as $key => $row) {
                      	?>	
-                     	<option value="<?php echo $row->ID?>"><?php echo $row->Name?></option>
+                     	<option value="<?php echo $row->id?>"><?php echo $row->Name?></option>
     					<?php 
                      	}
                      	?>	
@@ -184,6 +214,9 @@ function td_form_tool(){
         }
     }
 
+/*
+*Despliega el formulario para añadir una nueva categoria.
+*/
     function td_form_category(){
 
         global $wpdb;
@@ -214,12 +247,19 @@ function td_form_tool(){
         }
     }
 
-    function td_get_info_tool($id){
+/*
+*Recupera la información de la BD para mostrar la información de una herramienta.
+*/
+    function td_get_info_tool(){
+        $id = $_GET['id'];
         global $wpdb;
+        $results = $wpdb->get_row( "SELECT * FROM {$wpdb->prefix}td_Tools WHERE id =".$id, OBJECT );
+        $plataforms = $wpdb->get_results( "SELECT * FROM {$wpdb->prefix}td_tools_plataform tp join {$wpdb->prefix}td_Plataforms p on tp.plataform=p.id WHERE tp.Tool =".$id, OBJECT );
+
+        foreach ($plataforms as $plataform){
+            print_r($plataform->Name);
+        }
         
-        
-
-
-
+        print_r($plataforms);
     }
 ?>
