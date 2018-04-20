@@ -216,10 +216,9 @@ function td_form_tool(){
 
     function td_get_info_tool($id){
         global $wpdb;
-        
-        
 
-
-
+        $results = $wpdb->get_results( 'SELECT * FROM wp_td_Tools where id='.$id, OBJECT );
+        $licenses = $wpdb->get_results( 'SELECT * FROM wp_td_Tools where id='.$id, OBJECT );
+        print_r($results);
     }
 ?>
